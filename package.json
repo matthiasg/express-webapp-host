@@ -1,0 +1,27 @@
+{
+  "name": "express-webapp-host",
+  "version": "0.1.0",
+  "description": "express-webapp-host ===================",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/matthiasg/express-webapp-host.git"
+  },
+  "keywords": [
+    "express",
+    "middleware",
+    "webapp"
+  ],
+  "author": "Matthias Goetzke",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "03fc76388cb7d38bde6e8fa4dcd872c6ff2944bd",
+  "dependencies": {
+    "express": "~3.1.1",
+    "underscore": "~1.4.4",
+    "trumpet": "~0.3.1"
+  }
+}
