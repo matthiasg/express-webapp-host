@@ -1,6 +1,6 @@
 {
   "name": "express-webapp-host",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "express middleware to rewrite a html web apps base tag in the index html. This is useful for serving web apps (like angular) from different base urls.",
   "main": "index.js",
   "scripts": {
@@ -23,5 +23,8 @@
     "express": "~3.1.1",
     "underscore": "~1.4.4",
     "trumpet": "~0.3.1"
+  },
+  "devDependencies": {
+    "express": "~3.1.1"
   }
 }
