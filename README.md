@@ -19,9 +19,9 @@ It will be rewritten to the actual base path. Using the express example below wh
 
 # usage with express
 
-var webAppHost = require('express-webapp-host');
-var express = require('express');
-var app = express();
+    var webAppHost = require('express-webapp-host');
+    var express = require('express');
+    var app = express();
 
-app.use('/url/to/app/', webAppHost.webapp('./path/to/app/on/disk'));
-app.listen(8080)
+    app.use('/url/to/app/', webAppHost.webapp('./path/to/app/on/disk'));
+    app.listen(8080)
