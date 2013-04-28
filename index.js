@@ -1,13 +1,54 @@
 var url = require('url'),
-    path = require('path'),    
+    path = require('path'),
     fs = require('fs'),
     express = require('express'),
     _ = require('underscore'),
-    trumpet = require('trumpet');
+    trumpet = require('trumpet'),
+    methods = require('methods');
 
-module.exports.webApp = function(webAppPath) {
-  
-  var indexHtmlPath = path.join(webAppPath,'index.html')
+module.exports = function(expressApp){
+
+  function WebAppHost(app){
+    this.app = app;
+  }
+
+  WebAppHost.prototype.webapp = function(path, appDir) {
+    this.app.use(path, module.exports.webapp(appDir));
+  };
+
+  WebAppHost.prototype.api = function(prefix, api) {
+    module.exports.api( this.app, prefix, api );
+  };
+
+  return new WebAppHost(expressApp);
+};
+
+
+module.exports.api = function(app, prefix, api){
+
+  namespacedRouter = {};
+
+  methods.forEach( function(httpMethod){
+    namespacedRouter[httpMethod] = function(){
+      console.log();
+      var args = Array.prototype.slice.call(arguments);
+
+      var url = args.shift();
+
+      var namespacedUrl = prefix + url;
+      var namespacedArgs = [namespacedUrl].concat(args);
+
+      var originalMethod = app[httpMethod];
+      originalMethod.apply(app, namespacedArgs);
+    };
+  });
+
+  api( namespacedRouter );
+};
+
+module.exports.webapp = function(webAppPath) {
+
+  var indexHtmlPath = path.join(webAppPath,'index.html');
 
   var tryServeIndex = serveIndexHtml(indexHtmlPath);
   var tryServeStatic = express.static(webAppPath, {
@@ -54,7 +95,7 @@ var requestForFile = function(req) {
 };
 
 var getBaseUrl = function(req) {
-  
+
   var baseUrlPath;
 
   if (req.url === '/') {
@@ -65,7 +106,7 @@ var getBaseUrl = function(req) {
     var baseUrlLength = originalUrlLength - appLocalUrlLength;
     baseUrlPath = req.originalUrl.substr(0, baseUrlLength);
   }
-  
+
   if (baseUrlPath.substr(-1, 1) !== '/') {
     baseUrlPath += '/';
   }

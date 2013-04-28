@@ -1,6 +1,6 @@
 {
   "name": "express-webapp-host",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "express middleware to rewrite a html web apps base tag in the index html. This is useful for serving web apps (like angular) from different base urls.",
   "main": "index.js",
   "scripts": {
@@ -15,16 +15,22 @@
     "middleware",
     "webapp"
   ],
-  "author": "Matthias Goetzke",
+  "author": {
+    "name": "Matthias Goetzke"
+  },
   "license": "BSD",
   "readmeFilename": "README.md",
   "gitHead": "03fc76388cb7d38bde6e8fa4dcd872c6ff2944bd",
   "dependencies": {
     "express": "~3.1.1",
     "underscore": "~1.4.4",
-    "trumpet": "~0.3.1"
+    "trumpet": "~0.3.1",
+    "methods": "0.0.1"
   },
   "devDependencies": {
     "express": "~3.1.1"
-  }
+  },
+  "readme": "express-webapp-host\n===================\n\nSimple express middleware to host a static directory under a deeper url by rewriting the webapps index.html base tag\n\n## index.html\n\nThe index.html base tag must be present.\n\n    <meta charset=\"utf-8\">\n    <base href='http://localhost:8888/' />\n    <title>My App</title>\n\nIt will be rewritten to the actual base path. Using the express example below when access via localhost it would rewrite it to:\n\n    <meta charset=\"utf-8\">\n    <base href='http://localhost:8080/url/to/app/' />\n    <title>My App</title>\n\nAll url in the app should be relative paths.\n\n## usage with express\n\n    var webAppHost = require('express-webapp-host');\n    var express = require('express');\n    var app = express();\n\n    app.use('/url/to/app/', webAppHost.webApp('./path/to/app/on/disk'));\n    app.listen(8080)\n\n## angular.js\n\nIn combination with angular.js it is now possible to deep link when using Html5 Mode\n    \n    $locationProvider.html5Mode(true);\n\nMake sure all paths are relative unless you explicitly want to leave the sub location ('/url/to/app/' in the example above)\n",
+  "_id": "express-webapp-host@0.1.1",
+  "_from": "express-webapp-host@~0.1.1"
 }
