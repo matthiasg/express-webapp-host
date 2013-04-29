@@ -24,7 +24,12 @@ module.exports = function(expressApp){
 };
 
 
-module.exports.api = function(app, prefix, api){
+module.exports.api = function(app, prefix, middleware, api){
+
+  if(!api) {
+    api = middleware;
+    middleware = null;
+  }
 
   namespacedRouter = {};
 
@@ -36,7 +41,13 @@ module.exports.api = function(app, prefix, api){
       var url = args.shift();
 
       var namespacedUrl = prefix + url;
-      var namespacedArgs = [namespacedUrl].concat(args);
+      var argumentsToUseInstead = [namespacedUrl]
+      
+      if( middleware ) {
+        argumentsToUseInstead.push(middleware)
+      }
+
+      var namespacedArgs = [argumentsToUseInstead].concat(args);
 
       var originalMethod = app[httpMethod];
       originalMethod.apply(app, namespacedArgs);
