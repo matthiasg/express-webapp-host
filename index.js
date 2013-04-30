@@ -17,21 +17,27 @@ module.exports = function(expressApp){
   };
 
   WebAppHost.prototype.api = function(prefix, apiFunction ) {
-    module.exports.api( this.app, prefix, apiFunction(this.app) );
+    module.exports.api( this.app, prefix, apiFunction );
   };
 
   return new WebAppHost(expressApp);
 };
 
 
-module.exports.api = function(app, prefix, middleware, api){
+module.exports.api = function(app, prefix, middleware, apiFunction ){
 
-  if(!api) {
-    api = middleware;
+  if(!apiFunction) {
+    apiFunction = middleware;
     middleware = null;
   }
 
-  namespacedRouter = {};
+  var namespacedRouter = createProxyToExpressRouter(app, prefix, middleware);
+  apiFunction( namespacedRouter );
+};
+
+function createProxyToExpressRouter( app, prefix, middleware )
+{
+  var namespacedRouter = {};
 
   methods.forEach( function(httpMethod){
     namespacedRouter[httpMethod] = function(){
@@ -54,8 +60,8 @@ module.exports.api = function(app, prefix, middleware, api){
     };
   });
 
-  api( namespacedRouter );
-};
+  return namespacedRouter;  
+}
 
 module.exports.webapp = function(webAppPath) {
 
