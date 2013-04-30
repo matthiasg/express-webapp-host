@@ -11,13 +11,13 @@ module.exports = function(expressApp){
   function WebAppHost(app){
     this.app = app;
   }
-
+  
   WebAppHost.prototype.webapp = function(path, appDir) {
     this.app.use(path, module.exports.webapp(appDir));
   };
 
-  WebAppHost.prototype.api = function(prefix, api) {
-    module.exports.api( this.app, prefix, api );
+  WebAppHost.prototype.api = function(prefix, apiFunction ) {
+    module.exports.api( this.app, prefix, apiFunction(this.app) );
   };
 
   return new WebAppHost(expressApp);
