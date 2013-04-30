@@ -39,24 +39,26 @@ function createProxyToExpressRouter( app, prefix, middleware )
 {
   var namespacedRouter = {};
 
-  methods.forEach( function(httpMethod){
-    namespacedRouter[httpMethod] = function(){
-      console.log();
+  methods.forEach( function wrapAHttpMethod(httpMethod){
+    namespacedRouter[httpMethod] = function wrappedHttpMethod(){
       var args = Array.prototype.slice.call(arguments);
+      var argumentsToUseInstead = [];
 
       var url = args.shift();
-
       var namespacedUrl = prefix + url;
-      var argumentsToUseInstead = [namespacedUrl]
+
+      argumentsToUseInstead.push(namespacedUrl);
       
       if( middleware ) {
         argumentsToUseInstead.push(middleware)
       }
 
-      var namespacedArgs = [argumentsToUseInstead].concat(args);
+      for (var i = 0; i < args.length; i ++) {
+        argumentsToUseInstead.push(args[i]);
+      };
 
       var originalMethod = app[httpMethod];
-      originalMethod.apply(app, namespacedArgs);
+      originalMethod.apply(app, argumentsToUseInstead);
     };
   });
 
