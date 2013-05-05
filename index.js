@@ -16,8 +16,8 @@ module.exports = function(expressApp){
     this.app.use(path, module.exports.webapp(appDir));
   };
 
-  WebAppHost.prototype.api = function(prefix, apiFunction ) {
-    module.exports.api( this.app, prefix, apiFunction );
+  WebAppHost.prototype.api = function(prefix, middleware, apiFunction ) {
+    module.exports.api( this.app, prefix, middleware, apiFunction );
   };
 
   return new WebAppHost(expressApp);
