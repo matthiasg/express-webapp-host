@@ -16,23 +16,30 @@ module.exports = function(expressApp){
     this.app.use(path, module.exports.webapp(appDir));
   };
 
-  WebAppHost.prototype.api = function(prefix, middleware, apiFunction ) {
-    module.exports.api( this.app, prefix, middleware, apiFunction );
+  WebAppHost.prototype.api = function(prefix, middleware, apiFunction, options ) {
+    module.exports.api( this.app, prefix, middleware, apiFunction, options );
   };
 
   return new WebAppHost(expressApp);
 };
 
 
-module.exports.api = function(app, prefix, middleware, apiFunction ){
+module.exports.api = function(app, prefix, middleware, apiFunction, options ){
 
-  if(!apiFunction) {
+  if( typeof(apiFunction) === 'function'){
+  }
+  else if( typeof(middleware) === 'function' ){
+    options = apiFunction;
     apiFunction = middleware;
-    middleware = null;
+    middleware = null; 
+  }
+
+  if(!options){
+    options = {}
   }
 
   var namespacedRouter = createProxyToExpressRouter(app, prefix, middleware);
-  apiFunction( namespacedRouter );
+  apiFunction( namespacedRouter, options );
 };
 
 function createProxyToExpressRouter( app, prefix, middleware )
