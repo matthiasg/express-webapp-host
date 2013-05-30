@@ -129,7 +129,7 @@ var getBaseUrl = function(req) {
   } else {
     var appLocalUrlLength = req.url.length;
     var originalUrlLength = req.originalUrl.length;
-    var baseUrlLength = originalUrlLength - appLocalUrlLength;
+    var baseUrlLength = originalUrlLength - appLocalUrlLength + 1;
     baseUrlPath = req.originalUrl.substr(0, baseUrlLength);
   }
 
