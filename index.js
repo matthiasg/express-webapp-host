@@ -99,9 +99,9 @@ var serveIndexHtml = function(indexHtmlPath) {
     }
     baseUrl = getBaseUrl(req);
     res.status(200);
-    res.set({
-      'content-type': 'text/html'
-    });
+    res.header('content-type' , 'text/html' );
+    res.header('X-UA-Compatible' , 'IE=edge,chrome=1' );
+    
     patchBaseTag = createBaseTagPatchStream(baseUrl);
     return fs.createReadStream(indexHtmlPath).pipe(patchBaseTag).pipe(res);
   };
