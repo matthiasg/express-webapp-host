@@ -1,8 +1,9 @@
+'use strict';
+
 var url = require('url'),
     path = require('path'),
     fs = require('fs'),
     express = require('express'),
-    _ = require('underscore'),
     trumpet = require('trumpet'),
     methods = require('methods');
 
@@ -31,11 +32,11 @@ module.exports.api = function(app, prefix, middleware, apiFunction, options ){
   else if( typeof(middleware) === 'function' ){
     options = apiFunction;
     apiFunction = middleware;
-    middleware = null; 
+    middleware = null;
   }
 
   if(!options){
-    options = {}
+    options = {};
   }
 
   var namespacedRouter = createProxyToExpressRouter(app, prefix, middleware);
@@ -57,19 +58,19 @@ function createProxyToExpressRouter( app, prefix, middleware )
       argumentsToUseInstead.push(namespacedUrl);
       
       if( middleware ) {
-        argumentsToUseInstead.push(middleware)
+        argumentsToUseInstead.push(middleware);
       }
 
       for (var i = 0; i < args.length; i ++) {
         argumentsToUseInstead.push(args[i]);
-      };
+      }
 
       var originalMethod = app[httpMethod];
       originalMethod.apply(app, argumentsToUseInstead);
     };
   });
 
-  return namespacedRouter;  
+  return namespacedRouter;
 }
 
 module.exports.webapp = function(webAppPath) {
@@ -137,14 +138,14 @@ var getBaseUrl = function(req) {
     baseUrlPath += '/';
   }
 
-  return req.protocol + "://" + req.headers['host'] + baseUrlPath;
+  return req.protocol + '://' + req.headers.host + baseUrlPath;
 };
 
 var createBaseTagPatchStream = function(baseUrl) {
   var tr = trumpet();
 
   return tr.select('head > base', function(node) {
-    return node.update("", {
+    return node.update('', {
       href: baseUrl
     });
   });
