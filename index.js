@@ -30,6 +30,8 @@ module.exports.api = function(app, prefix, middleware, apiFunction, options, aut
   if( typeof(apiFunction) === 'function'){
   }
   else if( typeof(middleware) === 'function' ){
+    server = auth;
+    auth = options;
     options = apiFunction;
     apiFunction = middleware;
     middleware = null;
