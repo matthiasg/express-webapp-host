@@ -17,15 +17,15 @@ module.exports = function(expressApp){
     this.app.use(path, module.exports.webapp(appDir));
   };
 
-  WebAppHost.prototype.api = function(prefix, middleware, apiFunction, options, auth ) {
-    module.exports.api( this.app, prefix, middleware, apiFunction, options, auth );
+  WebAppHost.prototype.api = function(prefix, middleware, apiFunction, options, auth, server ) {
+    module.exports.api( this.app, prefix, middleware, apiFunction, options, auth, server );
   };
 
   return new WebAppHost(expressApp);
 };
 
 
-module.exports.api = function(app, prefix, middleware, apiFunction, options, auth ){
+module.exports.api = function(app, prefix, middleware, apiFunction, options, auth, server ){
 
   if( typeof(apiFunction) === 'function'){
   }
@@ -40,7 +40,7 @@ module.exports.api = function(app, prefix, middleware, apiFunction, options, aut
   }
 
   var namespacedRouter = createProxyToExpressRouter(app, prefix, middleware);
-  apiFunction( namespacedRouter, options, auth );
+  apiFunction( namespacedRouter, options, auth, server );
 };
 
 function createProxyToExpressRouter( app, prefix, middleware )
