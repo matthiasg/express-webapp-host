@@ -75,13 +75,20 @@ function createProxyToExpressRouter( app, prefix, middleware )
   return namespacedRouter;
 }
 
-module.exports.webapp = function(webAppPath) {
+module.exports.webapp = function(webAppPath, browserMaxAge) {
 
   var indexHtmlPath = path.join(webAppPath,'index.html');
 
+  var oneDay = 86400000;
+
+  if(browserMaxAge==null){
+    browserMaxAge = oneDay*7;
+  }
+
   var tryServeIndex = serveIndexHtml(indexHtmlPath);
   var tryServeStatic = express.static(webAppPath, {
-    redirect: false
+    redirect: false,
+    maxAge: browserMaxAge
   });
 
   return function(req, res, next) {
